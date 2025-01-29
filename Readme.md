@@ -1,0 +1,21 @@
+# Introduction
+Binary image segmentation is one of the most widely application in machine learning or deep learning. For example segmenting the cracks from the complex background image. Typically in the supervised paradigm annotation of images are required. A human annotations can be erroreneous and requires a careful quality control and assessment of the 
+
+# Sample outputs:
+| Images |
+| ------ |
+| Complex visualization of image pairs | 
+| ![](assets/2014_10_11_04_57_47_complex.png) |
+| A focused visualization of image pairs | 
+| ![](assets/2014_10_11_04_57_47_focused.png) |
+| Complex visualization of image pairs | 
+| ![](assets/2017_01_30_11_58_21_complex.png) |
+| A focused visualization of image pairs | 
+| ![](assets/2017_01_30_11_58_21_focused.png) |
+
+# Requirements
+MATLAB <br />
+Image Processing Toolbox
+
+# Feedback
+Please rate and provide feedback for the further improvements.
