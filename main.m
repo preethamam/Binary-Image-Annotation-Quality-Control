@@ -30,19 +30,24 @@ inputBW_image = [];
 colorspace = 'hsv';
 imresize_values = [242,322];
 resize_image = 0;  % To speed up. Use mytiledlayoutComplex = 0 without resize. Slightly faster.
-mytiledlayoutComplex = 1;
+mytiledlayoutComplex = 0;
 
 %% Overlay images
 img_files = dir(labeled_image_folder);
 img_files = {img_files(3:end).name};
 
+img_orifiles = dir(original_image_folder);
+img_orifiles = {img_orifiles(3:end).name};
+
 for i = 1:numel(img_files)
     
     % Image read
-    Iground = imread(fullfile(labeled_image_folder, img_files{i}));
-    Ioriginal = imread(fullfile(original_image_folder, img_files{i}));
-    IoriginalGrayscale = rgb2gray(Ioriginal);
-    
+    Iground = logical(imread(fullfile(labeled_image_folder, img_files{i})));
+    Ioriginal = imread(fullfile(original_image_folder, img_orifiles{i}));
+
+    % Get boundaries
+    bndOverlay = bwperim(Iground, 8);    
+
     if (resize_image == 1)
         Iground = imresize(Iground, imresize_values);
         Ioriginal = imresize(Ioriginal, imresize_values);
@@ -60,6 +65,10 @@ for i = 1:numel(img_files)
 
         % Get label overlay (MATLAB's inbuilt function)
         lab_overlay = labeloverlay(Ioriginal,Iground, Transparency = 0.75, Colormap = [0 1 0]);
+
+        % Get binary mask boundries
+        bndries = imoverlay(Ioriginal, bndOverlay, [0 1 0]);
+
         if mytiledlayoutComplex == 1
             % Show the plot        
             % Initialize a tight subplot
@@ -67,7 +76,7 @@ for i = 1:numel(img_files)
     
             ax1 = nexttile; imshow(Ioriginal)
             ax2 = nexttile; imshow(Iground)
-            ax3 = nexttile; imshow(IoriginalGrayscale) 
+            ax3 = nexttile; imshow(bndries) 
     
             ax4 = nexttile; imshowpair(Ioriginal,Iground, "falsecolor", ColorChannels= "green-magenta");        
             ax5 = nexttile; imshowpair(Ioriginal,Iground, "blend");               
@@ -80,9 +89,10 @@ for i = 1:numel(img_files)
             [filepath,name,ext] = fileparts(img_files{i});
             exportgraphics(gcf,fullfile('assets', [name '_complex' '.png']))
         else
-            tiledlayout(1,2, 'TileSpacing', 'tight', 'Padding', 'compact');
+            tiledlayout(1,3, 'TileSpacing', 'tight', 'Padding', 'compact');
             ax1 = nexttile; imshow(Ioriginal)
-            ax2 = nexttile; imshow(lab_overlay);
+            ax2 = nexttile; imshow(bndries);
+            ax3 = nexttile; imshow(lab_overlay);
 
             % Link axes
             linkaxes([ax1,ax2], 'xy'); 
