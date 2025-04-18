@@ -22,15 +22,10 @@ tic;
 labeled_image_folder = "label";
 original_image_folder = 'original';
 
-showplot = 1;
-
-input = [];
-startBin = 250;
-inputBW_image = [];
-colorspace = 'hsv';
 imresize_values = [242,322];
 resize_image = 0;  % To speed up. Use mytiledlayoutComplex = 0 without resize. Slightly faster.
 mytiledlayoutComplex = 0;
+showplot = 1;
 
 %% Overlay images
 img_files = dir(labeled_image_folder);
