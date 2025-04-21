@@ -63,6 +63,7 @@ for i = 1:numel(img_files)
 
         % Get binary mask boundries
         bndries = imoverlay(Ioriginal, bndOverlay, [0 1 0]);
+        IgroundOverlay = imoverlay(Ioriginal, Iground, [0 1 0]);
 
         if mytiledlayoutComplex == 1
             % Show the plot        
@@ -70,7 +71,7 @@ for i = 1:numel(img_files)
             tiledlayout(2,3, 'TileSpacing', 'none', 'Padding', 'compact');
     
             ax1 = nexttile; imshow(Ioriginal)
-            ax2 = nexttile; imshow(Iground)
+            ax2 = nexttile; imshow(IgroundOverlay)
             ax3 = nexttile; imshow(bndries) 
     
             ax4 = nexttile; imshowpair(Ioriginal,Iground, "falsecolor", ColorChannels= "green-magenta");        
@@ -84,13 +85,14 @@ for i = 1:numel(img_files)
             [filepath,name,ext] = fileparts(img_files{i});
             exportgraphics(gcf,fullfile('assets', [name '_complex' '.png']))
         else
-            tiledlayout(1,3, 'TileSpacing', 'tight', 'Padding', 'compact');
+            tiledlayout(1,4, 'TileSpacing', 'tight', 'Padding', 'compact');
             ax1 = nexttile; imshow(Ioriginal)
-            ax2 = nexttile; imshow(bndries);
-            ax3 = nexttile; imshow(lab_overlay);
+            ax2 = nexttile; imshow(IgroundOverlay)
+            ax3 = nexttile; imshow(bndries);
+            ax4 = nexttile; imshow(lab_overlay);
 
             % Link axes
-            linkaxes([ax1,ax2], 'xy'); 
+            linkaxes([ax1,ax2,ax3,ax4], 'xy'); 
 
             % Export graphics            
             [filepath,name,ext] = fileparts(img_files{i});
